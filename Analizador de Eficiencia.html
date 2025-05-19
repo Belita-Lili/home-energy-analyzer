@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analizador de Eficiencia Eléctrica Doméstica</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .device {
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        .progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin: 5px 0;
+        }
+        .progress-bar {
+            height: 20px;
+            border-radius: 5px;
+            text-align: center;
+            color: white;
+            font-weight: bold;
+        }
+        .stats {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e8f4fc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .recommendations {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e8f8f0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Analizador de Eficiencia Eléctrica Doméstica</h1>
+        
+        <div id="devices-container"></div>
+        
+        <div class="stats">
+            <h3>Estadísticas Totales</h3>
+            <p>Consumo total: <span id="total-consumption">0</span> kWh</p>
+            <p>Costo estimado: $<span id="total-cost">0</span></p>
+            <p>Eficiencia energética: <span id="efficiency-score">0</span>/100</p>
+            <p>Huella de carbono: <span id="carbon-footprint">0</span> kg CO₂</p>
+        </div>
+        
+        <div class="recommendations">
+            <h3>Recomendaciones</h3>
+            <ul id="recommendations-list"></ul>
+        </div>
+        
+        <button id="simulate-btn">Simular Consumo</button>
+        <button id="optimize-btn">Optimizar Consumo</button>
+    </div>
+
+    <script>
+        // Datos de dispositivos comunes en un hogar
+        const devices = [
+            { id: 1, name: "Refrigerador", power: 150, usage: 24, efficiency: 70 },
+            { id: 2, name: "Aire Acondicionado", power: 1000, usage: 8, efficiency: 50 },
+            { id: 3, name: "Iluminación LED", power: 10, usage: 12, efficiency: 85 },
+            { id: 4, name: "Televisor", power: 120, usage: 6, efficiency: 75 },
+            { id: 5, name: "Lavadora", power: 500, usage: 1, efficiency: 65 },
+            { id: 6, name: "Computadora", power: 200, usage: 8, efficiency: 80 },
+            { id: 7, name: "Microondas", power: 800, usage: 0.5, efficiency: 60 }
+        ];
+
+        // Precio promedio de la electricidad (USD/kWh)
+        const electricityPrice = 0.15;
+        // Factor de emisión de CO2 (kg CO2/kWh)
+        const carbonFactor = 0.5;
+
+        // Función para calcular el consumo diario de un dispositivo (kWh)
+        function calculateDailyConsumption(device) {
+            return (device.power * device.usage) / 1000;
+        }
+
+        // Función para calcular el costo diario
+        function calculateDailyCost(device) {
+            return calculateDailyConsumption(device) * electricityPrice;
+        }
+
+        // Función para calcular la huella de carbono diaria
+        function calculateDailyCarbon(device) {
+            return calculateDailyConsumption(device) * carbonFactor;
+        }
+
+        // Función para generar recomendaciones
+        function generateRecommendations(devices) {
+            const recommendations = [];
+            
+            // Analizar cada dispositivo
+            devices.forEach(device => {
+                if (device.efficiency < 60) {
+                    recommendations.push(`Considera reemplazar tu ${device.name} por un modelo más eficiente (actual: ${device.efficiency}%).`);
+                }
+                
+                if (calculateDailyConsumption(device) > 5) {
+                    recommendations.push(`El ${device.name} consume mucho. Reduce su tiempo de uso o busca alternativas más eficientes.`);
+                }
+            });
+            
+            // Recomendaciones generales
+            if (devices.reduce((total, device) => total + calculateDailyConsumption(device), 0) > 30) {
+                recommendations.push("Tu consumo total es alto. Considera implementar medidas de ahorro energético en tu hogar.");
+            }
+            
+            if (devices.filter(d => d.name.includes("LED")).length === 0) {
+                recommendations.push("Cambia tus bombillas tradicionales por LED para ahorrar energía.");
+            }
+            
+            if (devices.some(d => d.name.includes("Aire Acondicionado") && d.usage > 6)) {
+                recommendations.push("Usa ventiladores o abre ventanas cuando sea posible en lugar del aire acondicionado.");
+            }
+            
+            return recommendations.length > 0 ? recommendations : ["¡Buen trabajo! Tu consumo de energía parece eficiente."];
+        }
+
+        // Función para actualizar la interfaz
+        function updateUI() {
+            const devicesContainer = document.getElementById('devices-container');
+            devicesContainer.innerHTML = '<h3>Dispositivos</h3>';
+            
+            let totalConsumption = 0;
+            let totalCost = 0;
+            let totalCarbon = 0;
+            let efficiencySum = 0;
+            
+            // Mostrar cada dispositivo
+            devices.forEach(device => {
+                const consumption = calculateDailyConsumption(device);
+                const cost = calculateDailyCost(device);
+                const carbon = calculateDailyCarbon(device);
+                
+                totalConsumption += consumption;
+                totalCost += cost;
+                totalCarbon += carbon;
+                efficiencySum += device.efficiency;
+                
+                const deviceElement = document.createElement('div');
+                deviceElement.className = 'device';
+                deviceElement.innerHTML = `
+                    <h4>${device.name}</h4>
+                    <p>Potencia: ${device.power} W - Uso diario: ${device.usage} horas</p>
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: ${device.efficiency}%; background-color: ${getEfficiencyColor(device.efficiency)};">
+                            ${device.efficiency}% eficiencia
+                        </div>
+                    </div>
+                    <p>Consumo: ${consumption.toFixed(2)} kWh/día - Costo: $${cost.toFixed(2)} - CO₂: ${carbon.toFixed(2)} kg</p>
+                `;
+                
+                devicesContainer.appendChild(deviceElement);
+            });
+            
+            // Actualizar estadísticas totales
+            document.getElementById('total-consumption').textContent = totalConsumption.toFixed(2);
+            document.getElementById('total-cost').textContent = totalCost.toFixed(2);
+            document.getElementById('carbon-footprint').textContent = totalCarbon.toFixed(2);
+            
+            // Calcular puntaje de eficiencia (promedio ponderado)
+            const efficiencyScore = (efficiencySum / devices.length).toFixed(0);
+            document.getElementById('efficiency-score').textContent = efficiencyScore;
+            
+            // Actualizar recomendaciones
+            const recommendations = generateRecommendations(devices);
+            const recommendationsList = document.getElementById('recommendations-list');
+            recommendationsList.innerHTML = '';
+            
+            recommendations.forEach(rec => {
+                const li = document.createElement('li');
+                li.textContent = rec;
+                recommendationsList.appendChild(li);
+            });
+        }
+
+        // Función para obtener color según eficiencia
+        function getEfficiencyColor(efficiency) {
+            if (efficiency >= 80) return '#27ae60';  // Verde
+            if (efficiency >= 60) return '#f39c12';  // Naranja
+            return '#e74c3c';  // Rojo
+        }
+
+        // Función para simular variaciones en el consumo
+        function simulateConsumption() {
+            devices.forEach(device => {
+                // Variar el uso entre ±20%
+                device.usage = device.usage * (0.8 + Math.random() * 0.4);
+                
+                // Pequeña variación en la eficiencia (±5%)
+                device.efficiency = Math.max(30, Math.min(95, device.efficiency + (Math.random() * 10 - 5)));
+            });
+            
+            updateUI();
+        }
+
+        // Función para optimizar el consumo (simulación)
+        function optimizeConsumption() {
+            devices.forEach(device => {
+                // Mejorar la eficiencia entre 5-15%
+                device.efficiency = Math.min(95, device.efficiency + 5 + Math.random() * 10);
+                
+                // Reducir el uso entre 5-20%
+                device.usage = device.usage * (0.8 + Math.random() * 0.15);
+            });
+            
+            updateUI();
+        }
+
+        // Event listeners
+        document.getElementById('simulate-btn').addEventListener('click', simulateConsumption);
+        document.getElementById('optimize-btn').addEventListener('click', optimizeConsumption);
+
+        // Inicializar la interfaz
+        updateUI();
+    </script>
+</body>
+</html>
