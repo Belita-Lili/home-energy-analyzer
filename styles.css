@@ -1,0 +1,343 @@
+/* Paleta de colores */
+.color1 { background-color: #72bce7; }
+.color2 { background-color: #5caad4; }
+.color3 { background-color: #4699c2; }
+.color4 { background-color: #2f87af; }
+.color5 { background-color: #19759c; }
+
+/* Estilos generales */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f5f5f5;
+}
+
+header {
+    color: white;
+    padding: 2rem 1.5rem;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2rem;
+}
+
+header p {
+    margin: 0.5rem 0 0;
+    opacity: 0.9;
+}
+
+main {
+    padding: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+section {
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+h2 {
+    margin-top: 0;
+    color: white;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    padding-bottom: 0.5rem;
+}
+
+footer {
+    color: white;
+    text-align: center;
+    padding: 1.5rem;
+    margin-top: 2rem;
+}
+
+footer .configuracion {
+    margin-top: 1rem;
+    display: inline-block;
+    background-color: rgba(255,255,255,0.1);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+}
+
+/* Métricas totales */
+.metricas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.metrica {
+    background-color: white;
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.metrica h3 {
+    margin-top: 0;
+    font-size: 1rem;
+    color: #555;
+}
+
+.metrica p {
+    font-size: 1.5rem;
+    margin: 0.5rem 0;
+    font-weight: bold;
+    color: #2f87af;
+}
+
+.barra-eficiencia {
+    height: 10px;
+    background-color: #eee;
+    border-radius: 5px;
+    margin-top: 0.5rem;
+    overflow: hidden;
+}
+
+.nivel {
+    height: 100%;
+    background: linear-gradient(90deg, #ff6b6b, #feca57, #1dd1a1);
+    width: 69%;
+}
+
+/* Estilos para dispositivos */
+#lista-dispositivos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.dispositivo {
+    background-color: white;
+    padding: 1.2rem;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    position: relative;
+}
+
+.dispositivo h3 {
+    margin-top: 0;
+    color: #2f87af;
+    display: flex;
+    justify-content: space-between;
+}
+
+.dispositivo .prioridad {
+    font-size: 0.8rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 10px;
+    background-color: #feca57;
+    color: #333;
+}
+
+.prioridad.alta { background-color: #ff6b6b; color: white; }
+.prioridad.baja { background-color: #1dd1a1; color: white; }
+
+.dispositivo p {
+    margin: 0.3rem 0;
+    font-size: 0.9rem;
+}
+
+.dispositivo .consumo {
+    font-weight: bold;
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px dashed #ddd;
+}
+
+.dispositivo .acciones {
+    margin-top: 0.8rem;
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Botones */
+button {
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+}
+
+#agregar-dispositivo {
+    background-color: #2f87af;
+    color: white;
+    margin-top: 1rem;
+    width: 100%;
+}
+
+#agregar-dispositivo:hover {
+    background-color: #1a6a8f;
+}
+
+.btn-guardar {
+    background-color: #1dd1a1;
+    color: white;
+}
+
+.btn-guardar:hover {
+    background-color: #17a789;
+}
+
+.btn-cancelar {
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+.btn-cancelar:hover {
+    background-color: #e0e0e0;
+}
+
+.btn-editar {
+    background-color: #feca57;
+    color: #333;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+}
+
+.btn-editar:hover {
+    background-color: #e6b84c;
+}
+
+.btn-eliminar {
+    background-color: #ff6b6b;
+    color: white;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+}
+
+.btn-eliminar:hover {
+    background-color: #e05656;
+}
+
+/* Formulario */
+#formulario-dispositivo {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 500px;
+    z-index: 100;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-row {
+    display: flex;
+    gap: 1rem;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-weight: bold;
+    color: white;
+}
+
+input, select {
+    width: 100%;
+    padding: 0.6rem;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    font-family: inherit;
+}
+
+.form-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+/* Recomendaciones */
+#lista-recomendaciones {
+    background-color: white;
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+.recomendacion {
+    padding: 0.8rem;
+    margin-bottom: 0.5rem;
+    border-left: 4px solid #2f87af;
+    background-color: #f9f9f9;
+}
+
+.recomendacion.importante {
+    border-left-color: #ff6b6b;
+    background-color: #fff5f5;
+}
+
+.recomendacion.ahorro {
+    border-left-color: #1dd1a1;
+    background-color: #f5fffd;
+}
+
+/* Gráficos */
+.chart-container {
+    background-color: white;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+/* Overlay para formulario */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 99;
+    display: none;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .metricas {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    #lista-dispositivos {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+    
+    header h1 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .metricas {
+        grid-template-columns: 1fr;
+    }
+    
+    section {
+        padding: 1rem;
+    }
+}
