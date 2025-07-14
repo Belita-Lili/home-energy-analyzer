@@ -4,7 +4,8 @@
 
 Un simulador interactivo de análisis de redes eléctricas domésticas que mide la eficiencia energética, calcula costos y genera recomendaciones personalizadas.
 
-![Captura de pantalla](https://via.placeholder.com/800x400?text=Home+Energy+Analyzer+Screenshot) *(Reemplazar con imagen real)*
+<img width="957" height="761" alt="image" src="https://github.com/user-attachments/assets/4fc050af-a2c9-4aee-a095-c79a05d671b3" />
+
 
 ## Características principales
 
